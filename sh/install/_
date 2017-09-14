@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+#
+# === {{CMD}}
+#
+set -u -e -o pipefail
+
+local +x ORIGINAL_ARGS="$@"
+
+case "$(echo $@)" in
+
+  "")
+    if ! which opam &>/dev/null ; then
+      my_os package --install opam
+    fi
+    if ! which ocaml &>/dev/null ; then
+      my_os package --install ocaml
+    fi
+    cd "$THIS_DIR"
+    mkdir -p tmp
+    opam init --root "$THIS_DIR"/tmp
+    ;;
+
+  *)
+    echo "!!! Unknown arguments: $ORIGINAL_ARGS" >&2
+    exit 1
+    ;;
+
+esac
+
