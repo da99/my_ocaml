@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+#
+# === {{CMD}}
+#
+set -u -e -o pipefail
+
+local +x ORIGINAL_ARGS="$@"
+
+case "$(echo $@)" in
+
+  "")
+    process watch "--exclude scratch.o|scratch.c -r tmp/scratch" "my_ocaml scratch run"
+    ;;
+
+  *)
+    echo "!!! Unknown arguments: $ORIGINAL_ARGS" >&2
+    exit 1
+    ;;
+
+esac
+

@@ -9,15 +9,15 @@ local +x ORIGINAL_ARGS="$@"
 case "$(echo $@)" in
 
   "")
-    if ! which opam &>/dev/null ; then
-      my_os package --install opam
+    if ! which opam &>/dev/null || ! which ocaml &>/dev/null; then
+      my_os package --install opam ocaml
+      cd "$THIS_DIR"
+      mkdir -p tmp
+      opam init --root "$THIS_DIR"/tmp
     fi
-    if ! which ocaml &>/dev/null ; then
-      my_os package --install ocaml
-    fi
-    cd "$THIS_DIR"
-    mkdir -p tmp
-    opam init --root "$THIS_DIR"/tmp
+    opam update
+    opam upgrade
+    echo "=== Reminder: opam config setup -a"
     ;;
 
   *)
